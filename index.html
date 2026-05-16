@@ -24,7 +24,7 @@
     header h1 { font-size: 1.4rem; font-weight: 700; letter-spacing: 0.3px; }
     header p  { font-size: 0.82rem; opacity: 0.88; margin-top: 4px; }
 
-    .container { max-width: 860px; margin: 0 auto; padding: 24px 16px; }
+    .container { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
 
     .card {
       background: white;
@@ -73,14 +73,14 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
     }
 
     thead th {
       background: #fafafa;
       padding: 10px 14px;
       text-align: left;
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       font-weight: 700;
       color: #888;
       text-transform: uppercase;
@@ -91,7 +91,7 @@
     tbody tr { border-bottom: 1px solid #f5f5f5; transition: background 0.15s; }
     tbody tr:hover { background: #fff8f0; }
 
-    tbody td { padding: 12px 14px; color: #2d2d2d; vertical-align: middle; }
+    tbody td { padding: 11px 14px; color: #2d2d2d; vertical-align: top; }
 
     .badge-id {
       display: inline-block;
@@ -111,6 +111,12 @@
       font-size: 0.82rem;
       padding: 3px 10px;
       border-radius: 20px;
+    }
+
+    .anomalia-text {
+      font-size: 0.85rem;
+      color: #444;
+      line-height: 1.4;
     }
 
     .empty-state {
@@ -141,7 +147,7 @@
       margin-bottom: 16px;
     }
 
-    @media (max-width: 500px) {
+    @media (max-width: 600px) {
       thead th:nth-child(2) { display: none; }
       tbody td:nth-child(2) { display: none; }
     }
@@ -178,6 +184,7 @@
         <tr>
           <th>ID Registro</th>
           <th>Tipo / Concepto</th>
+          <th>Anomalía</th>
         </tr>
       </thead>
       <tbody id="table-body"></tbody>
@@ -195,7 +202,8 @@
 <script>
   const SHEET_ID   = '1vigwKRkYpBCRwclcjGMNRg4IcwiCMhFraDi36HTADjw';
   const SHEET_NAME = 'Riesgo';
-  const COL = { inspector: 1, tipo_concepto: 2, estado: 5, id_registro: 7 };
+  // B=1 Inspector, C=2 Tipo_Concepto, F=5 Estado, H=7 ID_Registro, J=9 Anomalia
+  const COL = { inspector: 1, tipo_concepto: 2, estado: 5, id_registro: 7, anomalia: 9 };
 
   let allRows = [];
 
@@ -252,6 +260,7 @@
         tr.innerHTML = `
           <td><span class="badge-id">${r[COL.id_registro] || '—'}</span></td>
           <td><span class="badge-concepto">${r[COL.tipo_concepto] || '—'}</span></td>
+          <td><span class="anomalia-text">${r[COL.anomalia] || '—'}</span></td>
         `;
         tableBody.appendChild(tr);
       });
