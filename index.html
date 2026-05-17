@@ -26,12 +26,69 @@
 
     .container { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
 
+    /* ── Contadores ── */
+    .counters {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    .counter-card {
+      flex: 1;
+      min-width: 180px;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border-radius: 14px;
+      padding: 20px 22px;
+      color: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+
+    .counter-card .days {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #f9a825;
+      line-height: 1;
+    }
+
+    .counter-card .label {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.7);
+      margin-top: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .counter-card .name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-top: 10px;
+      color: white;
+    }
+
+    .counter-card .since {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.45);
+      margin-top: 4px;
+    }
+
+    /* ── Cards ── */
     .card {
       background: white;
       border-radius: 12px;
       box-shadow: 0 1px 4px rgba(0,0,0,0.08);
       padding: 20px;
       margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #aaa;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 14px;
     }
 
     label { font-size: 0.85rem; font-weight: 600; color: #555; display: block; margin-bottom: 8px; }
@@ -90,7 +147,6 @@
 
     tbody tr { border-bottom: 1px solid #f5f5f5; transition: background 0.15s; }
     tbody tr:hover { background: #fff8f0; }
-
     tbody td { padding: 11px 14px; color: #2d2d2d; vertical-align: top; }
 
     .badge-id {
@@ -113,28 +169,13 @@
       border-radius: 20px;
     }
 
-    .anomalia-text {
-      font-size: 0.85rem;
-      color: #444;
-      line-height: 1.4;
-    }
+    .anomalia-text { font-size: 0.85rem; color: #444; line-height: 1.4; }
 
-    .empty-state {
-      text-align: center;
-      padding: 40px 20px;
-      color: #aaa;
-    }
-
+    .empty-state { text-align: center; padding: 40px 20px; color: #aaa; }
     .empty-state .icon { font-size: 2.5rem; margin-bottom: 10px; }
-    .empty-state p   { font-size: 0.9rem; }
+    .empty-state p { font-size: 0.9rem; }
 
-    .update-info {
-      font-size: 0.75rem;
-      color: #bbb;
-      text-align: right;
-      margin-top: 12px;
-    }
-
+    .update-info { font-size: 0.75rem; color: #bbb; text-align: right; margin-top: 12px; }
     .loading { text-align: center; padding: 30px; color: #aaa; font-size: 0.9rem; }
 
     .error-banner {
@@ -162,6 +203,13 @@
 
 <div class="container">
 
+  <!-- Contadores -->
+  <div class="section-title">Seguridad</div>
+  <div class="counters" id="counters">
+    <div class="loading">Cargando contadores...</div>
+  </div>
+
+  <!-- Selector inspector -->
   <div class="card">
     <label for="inspector-select">Seleccioná tu nombre</label>
     <select id="inspector-select">
@@ -200,9 +248,7 @@
 </div>
 
 <script>
-  const SHEET_ID   = '1vigwKRkYpBCRwclcjGMNRg4IcwiCMhFraDi36HTADjw';
-  const SHEET_NAME = 'Riesgo';
-  // B=1 Inspector, C=2 Tipo_Concepto, F=5 Estado, H=7 ID_Registro, J=9 Anomalia
+  const SHEET_ID = '1vigwKRkYpBCRwclcjGMNRg4IcwiCMhFraDi36HTADjw';
   const COL = { inspector: 1, tipo_concepto: 2, estado: 5, id_registro: 7, anomalia: 9 };
 
   let allRows = [];
@@ -216,15 +262,62 @@
   const statsDiv   = document.getElementById('stats');
   const countEl    = document.getElementById('count-total');
   const updateInfo = document.getElementById('update-info');
+  const countersEl = document.getElementById('counters');
 
-  async function fetchData() {
-    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+  async function fetchSheet(sheetName) {
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
     const res  = await fetch(url);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const text = await res.text();
     const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\);?\s*$/)[1]);
-    const rows = json.table.rows;
-    return rows.map(r => r.c.map(cell => (cell && cell.v != null ? String(cell.v) : '')));
+    return json.table.rows.map(r => r.c.map(cell => (cell && cell.v != null ? String(cell.v) : '')));
+  }
+
+  function daysSince(dateStr) {
+    // Acepta YYYY-MM-DD o DD/MM/YYYY
+    let date;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+      date = new Date(dateStr + 'T00:00:00');
+    } else {
+      const [d, m, y] = dateStr.split('/');
+      date = new Date(`${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}T00:00:00`);
+    }
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    return Math.floor((now - date) / 86400000);
+  }
+
+  function formatDate(dateStr) {
+    let date;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+      date = new Date(dateStr + 'T00:00:00');
+    } else {
+      const [d, m, y] = dateStr.split('/');
+      date = new Date(`${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}T00:00:00`);
+    }
+    return date.toLocaleDateString('es-PY', { day: '2-digit', month: 'long', year: 'numeric' });
+  }
+
+  function renderCounters(rows) {
+    // rows[0] = headers, rows[1..] = data
+    const data = rows.slice(1).filter(r => r[0] && r[1]);
+    if (data.length === 0) {
+      countersEl.innerHTML = '';
+      return;
+    }
+    countersEl.innerHTML = data.map(r => {
+      const name  = r[0];
+      const since = r[1];
+      const days  = daysSince(since);
+      return `
+        <div class="counter-card">
+          <div class="days">${days}</div>
+          <div class="label">días</div>
+          <div class="name">${name}</div>
+          <div class="since">desde el ${formatDate(since)}</div>
+        </div>
+      `;
+    }).join('');
   }
 
   function populate(rows) {
@@ -271,15 +364,20 @@
 
   (async () => {
     try {
-      const rows = await fetchData();
+      const [configRows, riesgoRows] = await Promise.all([
+        fetchSheet('Configuracion'),
+        fetchSheet('Riesgo')
+      ]);
+
+      renderCounters(configRows);
       loadingMsg.style.display = 'none';
-      allRows = populate(rows);
+      allRows = populate(riesgoRows);
       render('');
       updateInfo.textContent = `Última actualización: ${new Date().toLocaleString('es-PY')}`;
     } catch (e) {
       loadingMsg.style.display = 'none';
       errorMsg.style.display   = 'block';
-      errorMsg.textContent     = `No se pudieron cargar los datos. Verificá que el Sheet sea público (compartido con "Cualquier persona con el enlace").\nError: ${e.message}`;
+      errorMsg.textContent     = `No se pudieron cargar los datos. Verificá que el Sheet sea público.\nError: ${e.message}`;
     }
   })();
 </script>
