@@ -26,152 +26,85 @@
     .container { max-width: 980px; margin: 0 auto; padding: 24px 16px; }
 
     .section-title {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: #aaa;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      margin-bottom: 12px;
+      font-size: 0.75rem; font-weight: 700; color: #aaa;
+      text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 12px;
     }
 
     /* ── Contadores ── */
     .counters { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 24px; }
 
     .counter-card {
-      flex: 1;
-      min-width: 220px;
+      flex: 1; min-width: 220px;
       background: linear-gradient(135deg, #1a1a2e, #16213e);
-      border-radius: 16px;
-      padding: 22px 24px;
-      color: white;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-      text-align: center;
+      border-radius: 16px; padding: 22px 24px;
+      color: white; box-shadow: 0 4px 16px rgba(0,0,0,0.2); text-align: center;
     }
-
     .counter-card .counter-name {
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      color: rgba(255,255,255,0.55);
-      margin-bottom: 12px;
+      font-size: 0.78rem; text-transform: uppercase;
+      letter-spacing: 0.8px; color: rgba(255,255,255,0.55); margin-bottom: 12px;
     }
-
     .counter-card .days-row {
-      display: flex;
-      align-items: baseline;
-      justify-content: center;
-      gap: 6px;
-      margin-bottom: 8px;
+      display: flex; align-items: baseline; justify-content: center;
+      gap: 6px; margin-bottom: 8px;
     }
-
-    .counter-card .days-num {
-      font-size: 4rem;
-      font-weight: 800;
-      color: #f9a825;
-      line-height: 1;
-    }
-
-    .counter-card .days-label {
-      font-size: 1rem;
-      color: rgba(255,255,255,0.6);
-      font-weight: 500;
-    }
-
+    .counter-card .days-num  { font-size: 4rem; font-weight: 800; color: #f9a825; line-height: 1; }
+    .counter-card .days-label { font-size: 1rem; color: rgba(255,255,255,0.6); font-weight: 500; }
     .counter-card .time-row {
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: rgba(255,255,255,0.85);
-      font-variant-numeric: tabular-nums;
-      letter-spacing: 2px;
-      margin-bottom: 10px;
+      font-size: 1.6rem; font-weight: 700; color: rgba(255,255,255,0.85);
+      font-variant-numeric: tabular-nums; letter-spacing: 2px; margin-bottom: 10px;
     }
+    .counter-card .since { font-size: 0.7rem; color: rgba(255,255,255,0.35); }
 
-    .counter-card .since {
-      font-size: 0.7rem;
-      color: rgba(255,255,255,0.35);
-    }
-
-    /* ── Resto ── */
+    /* ── Cards ── */
     .card {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-      padding: 20px;
-      margin-bottom: 20px;
+      background: white; border-radius: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08); padding: 20px; margin-bottom: 20px;
     }
 
     label { font-size: 0.85rem; font-weight: 600; color: #555; display: block; margin-bottom: 8px; }
 
     select {
-      width: 100%;
-      padding: 10px 14px;
-      border: 1.5px solid #ddd;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      background: white;
-      appearance: none;
-      cursor: pointer;
-      transition: border-color 0.2s;
+      width: 100%; padding: 10px 14px; border: 1.5px solid #ddd;
+      border-radius: 8px; font-size: 0.95rem; background: white;
+      appearance: none; cursor: pointer; transition: border-color 0.2s;
     }
     select:focus { outline: none; border-color: #e65c00; }
 
     .stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
-
     .stat-box {
-      flex: 1;
-      min-width: 120px;
-      background: white;
-      border-radius: 10px;
-      padding: 14px 18px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-      text-align: center;
+      flex: 1; min-width: 120px; background: white; border-radius: 10px;
+      padding: 14px 18px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); text-align: center;
     }
     .stat-box .num { font-size: 2rem; font-weight: 700; color: #e65c00; line-height: 1; }
     .stat-box .lbl { font-size: 0.75rem; color: #888; margin-top: 4px; }
 
-    table { width: 100%; border-collapse: collapse; font-size: 0.87rem; }
+    /* tabla con scroll horizontal en mobile */
+    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.87rem; min-width: 520px; }
 
     thead th {
-      background: #fafafa;
-      padding: 10px 14px;
-      text-align: left;
-      font-size: 0.73rem;
-      font-weight: 700;
-      color: #999;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      border-bottom: 2px solid #f0f0f0;
+      background: #fafafa; padding: 10px 14px; text-align: left;
+      font-size: 0.73rem; font-weight: 700; color: #999;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      border-bottom: 2px solid #f0f0f0; white-space: nowrap;
     }
-
     tbody tr { border-bottom: 1px solid #f5f5f5; transition: background 0.15s; }
     tbody tr:hover { background: #fff8f0; }
     tbody td { padding: 11px 14px; color: #2d2d2d; vertical-align: top; }
 
     .badge-id {
-      display: inline-block;
-      background: #fff3e0;
-      color: #e65c00;
-      font-weight: 700;
-      font-size: 0.82rem;
-      padding: 3px 10px;
-      border-radius: 20px;
-      white-space: nowrap;
+      display: inline-block; background: #fff3e0; color: #e65c00;
+      font-weight: 700; font-size: 0.82rem; padding: 3px 10px;
+      border-radius: 20px; white-space: nowrap;
     }
     .badge-concepto {
-      display: inline-block;
-      background: #f3f3f3;
-      color: #555;
-      font-size: 0.82rem;
-      padding: 3px 10px;
-      border-radius: 20px;
+      display: inline-block; background: #f3f3f3; color: #555;
+      font-size: 0.82rem; padding: 3px 10px; border-radius: 20px;
     }
     .badge-area {
-      display: inline-block;
-      background: #e8f4fd;
-      color: #1a6fa8;
-      font-size: 0.82rem;
-      padding: 3px 10px;
-      border-radius: 20px;
+      display: inline-block; background: #e8f4fd; color: #1a6fa8;
+      font-size: 0.82rem; padding: 3px 10px; border-radius: 20px;
     }
     .anomalia-text { font-size: 0.85rem; color: #444; line-height: 1.4; }
 
@@ -183,17 +116,8 @@
     .loading { text-align: center; padding: 30px; color: #aaa; font-size: 0.9rem; }
 
     .error-banner {
-      background: #fff0f0;
-      border: 1px solid #ffcccc;
-      color: #c0392b;
-      border-radius: 8px;
-      padding: 14px 18px;
-      font-size: 0.87rem;
-      margin-bottom: 16px;
-    }
-
-    @media (max-width: 640px) {
-      thead th:nth-child(3), tbody td:nth-child(3) { display: none; }
+      background: #fff0f0; border: 1px solid #ffcccc; color: #c0392b;
+      border-radius: 8px; padding: 14px 18px; font-size: 0.87rem; margin-bottom: 16px;
     }
   </style>
 </head>
@@ -226,17 +150,19 @@
   <div class="card">
     <div class="loading" id="loading-msg">Cargando datos...</div>
     <div class="error-banner" id="error-msg" style="display:none;"></div>
-    <table id="data-table" style="display:none;">
-      <thead>
-        <tr>
-          <th>ID Registro</th>
-          <th>Tipo / Concepto</th>
-          <th>Área</th>
-          <th>Anomalía</th>
-        </tr>
-      </thead>
-      <tbody id="table-body"></tbody>
-    </table>
+    <div class="table-wrap">
+      <table id="data-table" style="display:none;">
+        <thead>
+          <tr>
+            <th>ID Registro</th>
+            <th>Tipo / Concepto</th>
+            <th>Área</th>
+            <th>Anomalía</th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
     <div class="empty-state" id="empty-state" style="display:none;">
       <div class="icon">✅</div>
       <p>Sin pendientes para este inspector.</p>
@@ -248,11 +174,9 @@
 
 <script>
   const SHEET_ID = '1vigwKRkYpBCRwclcjGMNRg4IcwiCMhFraDi36HTADjw';
-  // Riesgo cols (0-indexed): B=1 Inspector, C=2 Tipo_Concepto, F=5 Estado, H=7 ID_Registro, I=8 Area, J=9 Anomalia
   const COL = { inspector:1, tipo_concepto:2, estado:5, id_registro:7, area:8, anomalia:9 };
 
-  let allRows = [];
-  // startTimes[i] = Date object for counter i
+  let allRows  = [];
   let startTimes = [];
 
   const sel        = document.getElementById('inspector-select');
@@ -266,48 +190,75 @@
   const updateInfo = document.getElementById('update-info');
   const countersEl = document.getElementById('counters');
 
-  async function fetchSheet(name) {
+  // Fetch raw gviz JSON preserving cell objects for date handling
+  async function fetchSheetRaw(name) {
     const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(name)}`;
     const res  = await fetch(url);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const text = await res.text();
-    const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\);?\s*$/)[1]);
-    return (json.table.rows || []).map(r => r.c.map(c => (c && c.v != null ? String(c.v) : '')));
+    return JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\);?\s*$/)[1]);
   }
 
+  // Extrae valor como string, maneja fechas gviz: Date(yyyy,m,d)
+  function cellStr(c) {
+    if (!c || c.v == null) return '';
+    // gviz fecha: el valor formateado (c.f) es más legible; sino parsear c.v
+    if (typeof c.v === 'string' && c.v.startsWith('Date(')) {
+      // Usar c.f si existe, si no reconstruir desde Date(yyyy,m,d)
+      if (c.f) return c.f;
+      const parts = c.v.replace('Date(','').replace(')','').split(',').map(Number);
+      const d = new Date(parts[0], parts[1], parts[2]);
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    }
+    return String(c.v);
+  }
+
+  // Parsear fecha desde string YYYY-MM-DD, DD/MM/YYYY, o gviz Date(y,m,d)
   function parseDate(str) {
-    str = str.trim();
+    str = (str || '').trim();
+    if (str.startsWith('Date(')) {
+      const p = str.replace('Date(','').replace(')','').split(',').map(Number);
+      return new Date(p[0], p[1], p[2]);
+    }
     if (/^\d{4}-\d{2}-\d{2}$/.test(str)) return new Date(str + 'T00:00:00');
-    const [d, m, y] = str.split('/');
+    const [d,m,y] = str.split('/');
     return new Date(`${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}T00:00:00`);
   }
 
-  function formatDate(d) {
+  function formatDateLong(d) {
     return d.toLocaleDateString('es-PY', { day:'2-digit', month:'long', year:'numeric' });
   }
 
   function elapsed(start) {
     const diff = Math.max(0, Math.floor((Date.now() - start.getTime()) / 1000));
     const days = Math.floor(diff / 86400);
-    const h    = Math.floor((diff % 86400) / 3600).toString().padStart(2,'0');
-    const m    = Math.floor((diff % 3600)  / 60  ).toString().padStart(2,'0');
-    const s    = (diff % 60).toString().padStart(2,'0');
+    const h = Math.floor((diff % 86400) / 3600).toString().padStart(2,'0');
+    const m = Math.floor((diff % 3600)  / 60  ).toString().padStart(2,'0');
+    const s = (diff % 60).toString().padStart(2,'0');
     return { days, time: `${h}:${m}:${s}` };
   }
 
   function tickCounters() {
     startTimes.forEach((start, i) => {
       const { days, time } = elapsed(start);
-      const el = document.getElementById(`counter-days-${i}`);
-      const tel = document.getElementById(`counter-time-${i}`);
-      if (el)  el.textContent  = days;
-      if (tel) tel.textContent = time;
+      const de = document.getElementById(`cd-${i}`);
+      const te = document.getElementById(`ct-${i}`);
+      if (de) de.textContent = days;
+      if (te) te.textContent = time;
     });
   }
 
-  function renderCounters(rows) {
-    const data = rows.slice(1).filter(r => r[0] && r[1]);
-    if (!data.length) { countersEl.innerHTML = ''; return; }
+  function renderCounters(json) {
+    const rows = (json.table.rows || []);
+    // Saltar fila de encabezado (fila 0)
+    const data = rows.slice(1)
+      .map(r => r.c.map(cellStr))
+      .filter(r => r[0] && r[1]);
+
+    if (!data.length) {
+      countersEl.innerHTML = '<div style="color:#aaa;font-size:0.85rem;">Sin contadores configurados.</div>';
+      return;
+    }
 
     startTimes = data.map(r => parseDate(r[1]));
 
@@ -317,18 +268,19 @@
         <div class="counter-card">
           <div class="counter-name">${r[0]}</div>
           <div class="days-row">
-            <span class="days-num" id="counter-days-${i}">${days}</span>
+            <span class="days-num" id="cd-${i}">${days}</span>
             <span class="days-label">días</span>
           </div>
-          <div class="time-row" id="counter-time-${i}">${time}</div>
-          <div class="since">desde el ${formatDate(startTimes[i])}</div>
+          <div class="time-row" id="ct-${i}">${time}</div>
+          <div class="since">desde el ${formatDateLong(startTimes[i])}</div>
         </div>`;
     }).join('');
 
     setInterval(tickCounters, 1000);
   }
 
-  function populate(rows) {
+  function populate(json) {
+    const rows = (json.table.rows || []).map(r => r.c.map(cellStr));
     const pending = rows.filter(r => (r[COL.estado]||'').trim().toLowerCase() === 'pendiente');
     const inspectors = [...new Set(pending.map(r => (r[COL.inspector]||'').trim()))].filter(Boolean).sort();
     sel.innerHTML = `<option value="">— Todos los pendientes (${pending.length}) —</option>`;
@@ -372,19 +324,19 @@
 
   (async () => {
     try {
-      const [configRows, riesgoRows] = await Promise.all([
-        fetchSheet('Configuracion'),
-        fetchSheet('Riesgo')
+      const [configJson, riesgoJson] = await Promise.all([
+        fetchSheetRaw('Configuracion'),
+        fetchSheetRaw('Riesgo')
       ]);
-      renderCounters(configRows);
+      renderCounters(configJson);
       loadingMsg.style.display = 'none';
-      allRows = populate(riesgoRows);
+      allRows = populate(riesgoJson);
       render('');
       updateInfo.textContent = `Última actualización: ${new Date().toLocaleString('es-PY')}`;
     } catch(e) {
       loadingMsg.style.display = 'none';
       errorMsg.style.display   = 'block';
-      errorMsg.textContent     = `No se pudieron cargar los datos. Verificá que el Sheet sea público.\nError: ${e.message}`;
+      errorMsg.textContent     = `Error al cargar datos: ${e.message}`;
     }
   })();
 </script>
