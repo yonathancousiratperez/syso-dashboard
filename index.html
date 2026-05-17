@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard SYSO — Pendientes</title>
+  <title>Seguridad, Salud y Medio Ambiente — RASI SRL</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -14,14 +14,99 @@
       min-height: 100vh;
     }
 
+    /* ── LOGIN ── */
+    #login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #e65c00 100%);
+      padding: 24px;
+    }
+
+    .login-box {
+      background: white;
+      border-radius: 20px;
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    .login-logo {
+      font-size: 2.5rem;
+      margin-bottom: 8px;
+    }
+
+    .login-box h1 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #1a1a2e;
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+
+    .login-box .subtitle {
+      font-size: 0.78rem;
+      color: #aaa;
+      margin-bottom: 28px;
+    }
+
+    .login-box label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #555;
+      display: block;
+      text-align: left;
+      margin-bottom: 6px;
+    }
+
+    .login-box input[type="password"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid #ddd;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+      margin-bottom: 16px;
+      outline: none;
+    }
+
+    .login-box input[type="password"]:focus { border-color: #e65c00; }
+
+    .login-btn {
+      width: 100%;
+      padding: 13px;
+      background: linear-gradient(135deg, #e65c00, #f9a825);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .login-btn:hover { opacity: 0.9; }
+
+    .login-error {
+      color: #c0392b;
+      font-size: 0.82rem;
+      margin-top: 10px;
+      display: none;
+    }
+
+    /* ── APP ── */
+    #app { display: none; }
+
     header {
       background: linear-gradient(135deg, #e65c00, #f9a825);
       color: white;
       padding: 20px 24px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
-    header h1 { font-size: 1.4rem; font-weight: 700; }
-    header p  { font-size: 0.82rem; opacity: 0.88; margin-top: 4px; }
+    header h1 { font-size: 1.25rem; font-weight: 800; line-height: 1.3; }
+    header p  { font-size: 0.8rem; opacity: 0.88; margin-top: 4px; }
 
     .container { max-width: 980px; margin: 0 auto; padding: 24px 16px; }
 
@@ -120,56 +205,101 @@
 </head>
 <body>
 
-<header>
-  <h1>Dashboard SYSO — Riesgos Pendientes</h1>
-  <p>Astillero RASI SRL · Solo registros con estado Pendiente</p>
-</header>
-
-<div class="container">
-
-  <div class="section-title">Seguridad</div>
-  <div class="counters" id="counters">
-    <div class="loading">Cargando contadores...</div>
+<!-- ── PANTALLA DE LOGIN ── -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">🦺</div>
+    <h1>Seguridad, Salud y<br>Medio Ambiente</h1>
+    <p class="subtitle">Astillero RASI SRL</p>
+    <label for="pwd-input">Contraseña de acceso</label>
+    <input type="password" id="pwd-input" placeholder="Ingresá la contraseña" />
+    <button class="login-btn" onclick="doLogin()">Ingresar</button>
+    <p class="login-error" id="login-error">Contraseña incorrecta. Intentá nuevamente.</p>
   </div>
+</div>
 
-  <div class="card">
-    <label for="inspector-select">Seleccioná tu nombre</label>
-    <select id="inspector-select"><option value="">Cargando...</option></select>
-  </div>
+<!-- ── APP PRINCIPAL ── -->
+<div id="app">
+  <header>
+    <h1>Seguridad, Salud y Medio Ambiente</h1>
+    <p>Astillero RASI SRL · Riesgos con estado Pendiente</p>
+  </header>
 
-  <div class="stats" id="stats" style="display:none;">
-    <div class="stat-box">
-      <div class="num" id="count-total">—</div>
-      <div class="lbl">Pendientes</div>
+  <div class="container">
+
+    <div class="section-title">Seguridad</div>
+    <div class="counters" id="counters">
+      <div class="loading">Cargando contadores...</div>
     </div>
-  </div>
 
-  <div class="card">
-    <div class="loading" id="loading-msg">Cargando datos...</div>
-    <div class="error-banner" id="error-msg" style="display:none;"></div>
-    <div class="table-wrap">
-      <table id="data-table" style="display:none;">
-        <thead>
-          <tr>
-            <th>ID Registro</th>
-            <th>Tipo / Concepto</th>
-            <th>Área</th>
-            <th>Anomalía</th>
-          </tr>
-        </thead>
-        <tbody id="table-body"></tbody>
-      </table>
+    <div class="card">
+      <label for="inspector-select">Seleccioná tu nombre</label>
+      <select id="inspector-select"><option value="">Cargando...</option></select>
     </div>
-    <div class="empty-state" id="empty-state" style="display:none;">
-      <div class="icon">✅</div>
-      <p>Sin pendientes para este inspector.</p>
-    </div>
-  </div>
 
-  <div class="update-info" id="update-info"></div>
+    <div class="stats" id="stats" style="display:none;">
+      <div class="stat-box">
+        <div class="num" id="count-total">—</div>
+        <div class="lbl">Pendientes</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="loading" id="loading-msg">Cargando datos...</div>
+      <div class="error-banner" id="error-msg" style="display:none;"></div>
+      <div class="table-wrap">
+        <table id="data-table" style="display:none;">
+          <thead>
+            <tr>
+              <th>ID Registro</th>
+              <th>Tipo / Concepto</th>
+              <th>Área</th>
+              <th>Anomalía</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+      <div class="empty-state" id="empty-state" style="display:none;">
+        <div class="icon">✅</div>
+        <p>Sin pendientes para este inspector.</p>
+      </div>
+    </div>
+
+    <div class="update-info" id="update-info"></div>
+  </div>
 </div>
 
 <script>
+  // ── LOGIN ──────────────────────────────────────────────────────────────────
+  const PWD = 'boli-ctm';
+
+  function doLogin() {
+    const val = document.getElementById('pwd-input').value;
+    if (val === PWD) {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      sessionStorage.setItem('ssma_auth', '1');
+      initApp();
+    } else {
+      document.getElementById('login-error').style.display = 'block';
+      document.getElementById('pwd-input').value = '';
+      document.getElementById('pwd-input').focus();
+    }
+  }
+
+  // Enter en el campo de contraseña
+  document.getElementById('pwd-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doLogin();
+  });
+
+  // Si ya autenticó en esta sesión, saltar login
+  if (sessionStorage.getItem('ssma_auth') === '1') {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+  }
+
+  // ── DASHBOARD ──────────────────────────────────────────────────────────────
   const SHEET_ID = '1vigwKRkYpBCRwclcjGMNRg4IcwiCMhFraDi36HTADjw';
   const COL = { inspector:1, tipo_concepto:2, estado:5, id_registro:7, area:8, anomalia:9 };
 
@@ -195,11 +325,9 @@
     return JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\);?\s*$/)[1]);
   }
 
-  // Extrae valor de celda gviz como string.
-  // gviz puede devolver fechas como Date(yyyy,m,d) — usamos c.f (formateado) si existe.
   function cellStr(c) {
     if (!c || c.v == null) return '';
-    if (c.f) return c.f;                          // valor formateado por Sheets (ej: "23/12/2025")
+    if (c.f) return c.f;
     if (typeof c.v === 'string' && c.v.startsWith('Date(')) {
       const p = c.v.replace('Date(','').replace(')','').split(',').map(Number);
       return `${p[0]}-${String(p[1]+1).padStart(2,'0')}-${String(p[2]).padStart(2,'0')}`;
@@ -207,20 +335,16 @@
     return String(c.v);
   }
 
-  // Parsea fecha desde cualquier formato razonable
   function parseDate(str) {
     str = (str || '').trim();
-    // DD/MM/YYYY
     if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(str)) {
       const [d,m,y] = str.split('/');
       return new Date(+y, +m-1, +d);
     }
-    // YYYY-MM-DD
     if (/^\d{4}-\d{2}-\d{2}$/.test(str)) {
       const [y,m,d] = str.split('-');
       return new Date(+y, +m-1, +d);
     }
-    // Último recurso
     return new Date(str);
   }
 
@@ -248,19 +372,13 @@
   }
 
   function renderCounters(json) {
-    const rows = (json.table.rows || []);
-    // gviz ya separa los encabezados: rows contiene SOLO las filas de datos
-    const data = rows
+    const data = (json.table.rows || [])
       .map(r => r.c.map(cellStr))
-      .filter(r => r[0] && r[1] && r[0].toLowerCase() !== 'nombre'); // por si acaso
+      .filter(r => r[0] && r[1] && r[0].toLowerCase() !== 'nombre');
 
-    if (!data.length) {
-      countersEl.innerHTML = '<div style="color:#aaa;font-size:0.85rem;padding:10px 0;">Sin contadores configurados.</div>';
-      return;
-    }
+    if (!data.length) { countersEl.innerHTML = ''; return; }
 
     startTimes = data.map(r => parseDate(r[1]));
-
     countersEl.innerHTML = data.map((r, i) => {
       const { days, time } = elapsed(startTimes[i]);
       return `
@@ -321,7 +439,7 @@
 
   sel.addEventListener('change', () => render(sel.value));
 
-  (async () => {
+  async function initApp() {
     try {
       const [configJson, riesgoJson] = await Promise.all([
         fetchSheetRaw('Configuracion'),
@@ -337,7 +455,10 @@
       errorMsg.style.display   = 'block';
       errorMsg.textContent     = `Error al cargar datos: ${e.message}`;
     }
-  })();
+  }
+
+  // Si ya estaba autenticado, iniciar app directamente
+  if (sessionStorage.getItem('ssma_auth') === '1') initApp();
 </script>
 
 </body>
