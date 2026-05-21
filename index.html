@@ -17,43 +17,25 @@
     /* ── LOGIN ── */
     #login-screen {
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #e65c00 100%);
       padding: 24px;
     }
-
     .login-box {
-      background: white;
-      border-radius: 20px;
-      padding: 40px 36px;
-      width: 100%;
-      max-width: 380px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      text-align: center;
+      background: white; border-radius: 20px; padding: 40px 36px;
+      width: 100%; max-width: 380px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center;
     }
-
     .login-logo { font-size: 2.5rem; margin-bottom: 8px; }
-
-    .login-box h1 {
-      font-size: 1.1rem; font-weight: 800; color: #1a1a2e;
-      line-height: 1.3; margin-bottom: 4px;
-    }
+    .login-box h1 { font-size: 1.1rem; font-weight: 800; color: #1a1a2e; line-height: 1.3; margin-bottom: 4px; }
     .login-box .subtitle { font-size: 0.78rem; color: #aaa; margin-bottom: 28px; }
-
-    .login-box label {
-      font-size: 0.8rem; font-weight: 600; color: #555;
-      display: block; text-align: left; margin-bottom: 6px;
-    }
-
+    .login-box label { font-size: 0.8rem; font-weight: 600; color: #555; display: block; text-align: left; margin-bottom: 6px; }
     .login-box input[type="password"] {
       width: 100%; padding: 12px 16px; border: 1.5px solid #ddd;
       border-radius: 10px; font-size: 1rem; transition: border-color 0.2s;
       margin-bottom: 16px; outline: none;
     }
     .login-box input[type="password"]:focus { border-color: #e65c00; }
-
     .login-btn {
       width: 100%; padding: 13px;
       background: linear-gradient(135deg, #e65c00, #f9a825);
@@ -61,7 +43,6 @@
       font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: opacity 0.2s;
     }
     .login-btn:hover { opacity: 0.9; }
-
     .login-error { color: #c0392b; font-size: 0.82rem; margin-top: 10px; display: none; }
 
     /* ── APP ── */
@@ -69,11 +50,30 @@
 
     header {
       background: linear-gradient(135deg, #e65c00, #f9a825);
-      color: white; padding: 20px 24px;
+      color: white; padding: 20px 24px 0;
       box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
     header h1 { font-size: 1.25rem; font-weight: 800; line-height: 1.3; }
-    header p  { font-size: 0.8rem; opacity: 0.88; margin-top: 4px; }
+    header p  { font-size: 0.8rem; opacity: 0.88; margin-top: 4px; margin-bottom: 16px; }
+
+    /* ── TABS ── */
+    .tabs {
+      display: flex; gap: 4px;
+    }
+    .tab-btn {
+      padding: 10px 20px;
+      background: rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.8);
+      border: none; border-radius: 8px 8px 0 0;
+      font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; transition: background 0.2s, color 0.2s;
+    }
+    .tab-btn:hover { background: rgba(255,255,255,0.25); color: white; }
+    .tab-btn.active { background: #f0f2f5; color: #e65c00; }
+
+    /* ── PAGES ── */
+    .page { display: none; }
+    .page.active { display: block; }
 
     .container { max-width: 980px; margin: 0 auto; padding: 24px 16px; }
 
@@ -82,8 +82,8 @@
       text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 12px;
     }
 
+    /* counters */
     .counters { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 24px; }
-
     .counter-card {
       flex: 1; min-width: 220px;
       background: linear-gradient(135deg, #1a1a2e, #16213e);
@@ -94,10 +94,7 @@
       font-size: 0.78rem; text-transform: uppercase;
       letter-spacing: 0.8px; color: rgba(255,255,255,0.55); margin-bottom: 12px;
     }
-    .counter-card .days-row {
-      display: flex; align-items: baseline; justify-content: center;
-      gap: 6px; margin-bottom: 8px;
-    }
+    .counter-card .days-row { display: flex; align-items: baseline; justify-content: center; gap: 6px; margin-bottom: 8px; }
     .counter-card .days-num  { font-size: 4rem; font-weight: 800; color: #f9a825; line-height: 1; }
     .counter-card .days-label { font-size: 1rem; color: rgba(255,255,255,0.6); font-weight: 500; }
     .counter-card .time-row {
@@ -106,13 +103,9 @@
     }
     .counter-card .since { font-size: 0.7rem; color: rgba(255,255,255,0.35); }
 
-    .card {
-      background: white; border-radius: 12px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08); padding: 20px; margin-bottom: 20px;
-    }
-
+    /* card / select / stats */
+    .card { background: white; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); padding: 20px; margin-bottom: 20px; }
     label { font-size: 0.85rem; font-weight: 600; color: #555; display: block; margin-bottom: 8px; }
-
     select {
       width: 100%; padding: 10px 14px; border: 1.5px solid #ddd;
       border-radius: 8px; font-size: 0.95rem; background: white;
@@ -128,10 +121,9 @@
     .stat-box .num { font-size: 2rem; font-weight: 700; color: #e65c00; line-height: 1; }
     .stat-box .lbl { font-size: 0.75rem; color: #888; margin-top: 4px; }
 
+    /* tables */
     .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-
     table { width: 100%; border-collapse: collapse; font-size: 0.87rem; min-width: 520px; }
-
     thead th {
       background: #fafafa; padding: 10px 14px; text-align: left;
       font-size: 0.73rem; font-weight: 700; color: #999;
@@ -142,19 +134,9 @@
     tbody tr:hover { background: #fff8f0; }
     tbody td { padding: 11px 14px; color: #2d2d2d; vertical-align: top; }
 
-    .badge-id {
-      display: inline-block; background: #fff3e0; color: #e65c00;
-      font-weight: 700; font-size: 0.82rem; padding: 3px 10px;
-      border-radius: 20px; white-space: nowrap;
-    }
-    .badge-concepto {
-      display: inline-block; background: #f3f3f3; color: #555;
-      font-size: 0.82rem; padding: 3px 10px; border-radius: 20px;
-    }
-    .badge-area {
-      display: inline-block; background: #e8f4fd; color: #1a6fa8;
-      font-size: 0.82rem; padding: 3px 10px; border-radius: 20px;
-    }
+    .badge-id { display: inline-block; background: #fff3e0; color: #e65c00; font-weight: 700; font-size: 0.82rem; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
+    .badge-concepto { display: inline-block; background: #f3f3f3; color: #555; font-size: 0.82rem; padding: 3px 10px; border-radius: 20px; }
+    .badge-area { display: inline-block; background: #e8f4fd; color: #1a6fa8; font-size: 0.82rem; padding: 3px 10px; border-radius: 20px; }
     .anomalia-text { font-size: 0.85rem; color: #444; line-height: 1.4; }
 
     .empty-state { text-align: center; padding: 40px 20px; color: #aaa; }
@@ -163,49 +145,24 @@
 
     .update-info { font-size: 0.75rem; color: #bbb; text-align: right; margin-top: 12px; }
     .loading { text-align: center; padding: 30px; color: #aaa; font-size: 0.9rem; }
-
-    .error-banner {
-      background: #fff0f0; border: 1px solid #ffcccc; color: #c0392b;
-      border-radius: 8px; padding: 14px 18px; font-size: 0.87rem; margin-bottom: 16px;
-    }
+    .error-banner { background: #fff0f0; border: 1px solid #ffcccc; color: #c0392b; border-radius: 8px; padding: 14px 18px; font-size: 0.87rem; margin-bottom: 16px; }
 
     /* ── SECTORES ── */
-    .sectores-stats {
-      display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px;
-    }
+    .sectores-stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
 
-    .sectores-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-bottom: 20px;
-    }
+    .sectores-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
 
-    .sector-card {
-      background: white; border-radius: 12px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden;
-    }
-
+    .sector-card { background: white; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden; }
     .sector-card-header {
       background: linear-gradient(135deg, #1a1a2e, #16213e);
       color: white; padding: 14px 18px;
       display: flex; align-items: center; justify-content: space-between; gap: 8px;
     }
     .sector-card-header .tec-name { font-weight: 700; font-size: 0.9rem; }
-
-    .badge-count {
-      background: rgba(249,168,37,0.25); color: #f9a825;
-      font-weight: 700; font-size: 0.8rem; padding: 3px 10px;
-      border-radius: 20px; white-space: nowrap;
-    }
+    .badge-count { background: rgba(249,168,37,0.25); color: #f9a825; font-weight: 700; font-size: 0.8rem; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
 
     .sector-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 0; }
-    .sector-table thead th {
-      background: #fafafa; padding: 8px 14px; text-align: left;
-      font-size: 0.72rem; font-weight: 700; color: #999;
-      text-transform: uppercase; letter-spacing: 0.5px;
-      border-bottom: 2px solid #f0f0f0; white-space: nowrap;
-    }
+    .sector-table thead th { background: #fafafa; padding: 8px 14px; text-align: left; font-size: 0.72rem; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #f0f0f0; white-space: nowrap; }
     .sector-table tbody tr { border-bottom: 1px solid #f5f5f5; }
     .sector-table tbody tr:hover { background: #fff8f0; }
     .sector-table tbody td { padding: 9px 14px; color: #2d2d2d; }
@@ -218,7 +175,7 @@
 </head>
 <body>
 
-<!-- ── PANTALLA DE LOGIN ── -->
+<!-- LOGIN -->
 <div id="login-screen">
   <div class="login-box">
     <div class="login-logo">🦺</div>
@@ -231,72 +188,72 @@
   </div>
 </div>
 
-<!-- ── APP PRINCIPAL ── -->
+<!-- APP -->
 <div id="app">
   <header>
     <h1>Seguridad, Salud y Medio Ambiente</h1>
-    <p>Astillero RASI SRL · Riesgos con estado Pendiente</p>
+    <p>Astillero RASI SRL</p>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('riesgos', this)">Riesgos Pendientes</button>
+      <button class="tab-btn" onclick="switchTab('sectores', this)">Sectores Operativos</button>
+    </div>
   </header>
 
-  <div class="container">
+  <!-- PÁGINA: RIESGOS -->
+  <div id="page-riesgos" class="page active">
+    <div class="container">
+      <div class="section-title">Seguridad</div>
+      <div class="counters" id="counters"><div class="loading">Cargando contadores...</div></div>
 
-    <!-- Contadores días sin accidentes -->
-    <div class="section-title">Seguridad</div>
-    <div class="counters" id="counters">
-      <div class="loading">Cargando contadores...</div>
+      <div class="card">
+        <label for="inspector-select">Seleccioná tu nombre</label>
+        <select id="inspector-select"><option value="">Cargando...</option></select>
+      </div>
+
+      <div class="stats" id="stats" style="display:none;">
+        <div class="stat-box">
+          <div class="num" id="count-total">—</div>
+          <div class="lbl">Pendientes</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="loading" id="loading-msg">Cargando datos...</div>
+        <div class="error-banner" id="error-msg" style="display:none;"></div>
+        <div class="table-wrap">
+          <table id="data-table" style="display:none;">
+            <thead>
+              <tr>
+                <th>ID Registro</th>
+                <th>Tipo / Concepto</th>
+                <th>Área</th>
+                <th>Anomalía</th>
+              </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="empty-state" style="display:none;">
+          <div class="icon">✅</div>
+          <p>Sin pendientes para este inspector.</p>
+        </div>
+      </div>
+
+      <div class="update-info" id="update-info"></div>
     </div>
+  </div>
 
-    <!-- Riesgos pendientes -->
-    <div class="section-title">Riesgos Pendientes</div>
-
-    <div class="card">
-      <label for="inspector-select">Seleccioná tu nombre</label>
-      <select id="inspector-select"><option value="">Cargando...</option></select>
-    </div>
-
-    <div class="stats" id="stats" style="display:none;">
-      <div class="stat-box">
-        <div class="num" id="count-total">—</div>
-        <div class="lbl">Pendientes</div>
+  <!-- PÁGINA: SECTORES -->
+  <div id="page-sectores" class="page">
+    <div class="container">
+      <div class="error-banner" id="sectores-error" style="display:none;"></div>
+      <div class="loading" id="sectores-loading">Cargando sectores...</div>
+      <div id="sectores-content" style="display:none;">
+        <div class="sectores-stats" id="sectores-stats"></div>
+        <div class="sectores-grid" id="sectores-grid"></div>
+        <div class="update-info" id="sectores-update"></div>
       </div>
     </div>
-
-    <div class="card">
-      <div class="loading" id="loading-msg">Cargando datos...</div>
-      <div class="error-banner" id="error-msg" style="display:none;"></div>
-      <div class="table-wrap">
-        <table id="data-table" style="display:none;">
-          <thead>
-            <tr>
-              <th>ID Registro</th>
-              <th>Tipo / Concepto</th>
-              <th>Área</th>
-              <th>Anomalía</th>
-            </tr>
-          </thead>
-          <tbody id="table-body"></tbody>
-        </table>
-      </div>
-      <div class="empty-state" id="empty-state" style="display:none;">
-        <div class="icon">✅</div>
-        <p>Sin pendientes para este inspector.</p>
-      </div>
-    </div>
-
-    <div class="update-info" id="update-info"></div>
-
-    <!-- Sectores Operativos -->
-    <div class="section-title" style="margin-top:12px;">Sectores Operativos</div>
-
-    <div class="error-banner" id="sectores-error" style="display:none;"></div>
-    <div class="loading" id="sectores-loading">Cargando sectores...</div>
-
-    <div id="sectores-content" style="display:none;">
-      <div class="sectores-stats" id="sectores-stats"></div>
-      <div class="sectores-grid" id="sectores-grid"></div>
-      <div class="update-info" id="sectores-update"></div>
-    </div>
-
   </div>
 </div>
 
@@ -327,7 +284,15 @@
     document.getElementById('app').style.display = 'block';
   }
 
-  // ── SHARED ────────────────────────────────────────────────────────────────
+  // ── TABS ───────────────────────────────────────────────────────────────────
+  function switchTab(tab, btn) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('page-' + tab).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // ── SHARED ─────────────────────────────────────────────────────────────────
   const SHEET_ID = '1vigwKRkYpBCRwclcjGMNRg4IcwiCMhFraDi36HTADjw';
 
   async function fetchSheetRaw(name) {
@@ -348,11 +313,9 @@
     return String(c.v);
   }
 
-  // ── CONTADORES ────────────────────────────────────────────────────────────
+  // ── CONTADORES ─────────────────────────────────────────────────────────────
   const COL = { inspector:1, tipo_concepto:2, estado:5, id_registro:7, area:8, anomalia:9 };
-
-  let allRows    = [];
-  let startTimes = [];
+  let allRows = [], startTimes = [];
 
   const sel        = document.getElementById('inspector-select');
   const tableBody  = document.getElementById('table-body');
@@ -368,12 +331,10 @@
   function parseDate(str) {
     str = (str || '').trim();
     if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(str)) {
-      const [d,m,y] = str.split('/');
-      return new Date(+y, +m-1, +d);
+      const [d,m,y] = str.split('/'); return new Date(+y, +m-1, +d);
     }
     if (/^\d{4}-\d{2}-\d{2}$/.test(str)) {
-      const [y,m,d] = str.split('-');
-      return new Date(+y, +m-1, +d);
+      const [y,m,d] = str.split('-'); return new Date(+y, +m-1, +d);
     }
     return new Date(str);
   }
@@ -405,9 +366,7 @@
     const data = (json.table.rows || [])
       .map(r => r.c.map(cellStr))
       .filter(r => r[0] && r[1] && r[0].toLowerCase() !== 'nombre');
-
     if (!data.length) { countersEl.innerHTML = ''; return; }
-
     startTimes = data.map(r => parseDate(r[1]));
     countersEl.innerHTML = data.map((r, i) => {
       const { days, time } = elapsed(startTimes[i]);
@@ -422,7 +381,6 @@
           <div class="since">desde el ${formatDateLong(startTimes[i])}</div>
         </div>`;
     }).join('');
-
     setInterval(tickCounters, 1000);
   }
 
@@ -443,11 +401,9 @@
     const filtered = inspector
       ? allRows.filter(r => (r[COL.inspector]||'').trim() === inspector)
       : allRows;
-
     countEl.textContent = filtered.length;
     statsDiv.style.display = filtered.length > 0 || inspector ? 'flex' : 'none';
     tableBody.innerHTML = '';
-
     if (!filtered.length) {
       dataTable.style.display  = 'none';
       emptyState.style.display = 'block';
@@ -469,25 +425,24 @@
 
   sel.addEventListener('change', () => render(sel.value));
 
-  // ── SECTORES OPERATIVOS ───────────────────────────────────────────────────
+  // ── SECTORES ───────────────────────────────────────────────────────────────
   function parseSectores(json) {
-    // Fila 0: título — ignorar
-    // Fila 1: ['Fecha de apertura', 'Téc. X', '', 'Téc. Y', '', 'Téc. Z']
-    //   técnicos en índices impares: 1, 3, 5, ...
-    //   fechas en índices pares:     0, 2, 4, ...
-    // Filas 2+: [fecha_A, sector_A, fecha_B, sector_B, ...]
-    const rows     = (json.table.rows || []).map(r => r.c.map(cellStr));
-    const headerRow = rows[1] || [];
-    const tecnicos  = [];
+    // gviz usa la fila 2 del sheet como cabecera → queda en json.table.cols[].label
+    // Los técnicos están en índices impares: 1, 3, 5, ...
+    // Las fechas en los índices pares anteriores: 0, 2, 4, ...
+    // Todas las filas de json.table.rows son datos de sectores
+    const cols = json.table.cols || [];
+    const rows = (json.table.rows || []).map(r => r.c.map(cellStr));
+    const tecnicos = [];
 
-    for (let col = 1; col < headerRow.length; col += 2) {
-      const nombre = headerRow[col];
+    for (let col = 1; col < cols.length; col += 2) {
+      const nombre = (cols[col].label || '').trim();
       if (!nombre) continue;
       const colFecha  = col - 1;
       const colSector = col;
       const sectores  = [];
 
-      for (let r = 2; r < rows.length; r++) {
+      for (let r = 0; r < rows.length; r++) {
         const sector = (rows[r][colSector] || '').trim();
         const fecha  = (rows[r][colFecha]  || '').trim();
         if (sector) sectores.push({ sector, fecha });
@@ -502,8 +457,7 @@
   function renderSectores(tecnicos) {
     const total = tecnicos.reduce((s, t) => s + t.sectores.length, 0);
 
-    const statsEl = document.getElementById('sectores-stats');
-    statsEl.innerHTML =
+    document.getElementById('sectores-stats').innerHTML =
       `<div class="stat-box"><div class="num">${total}</div><div class="lbl">Total sectores</div></div>` +
       tecnicos.map(t =>
         `<div class="stat-box">
@@ -512,8 +466,7 @@
         </div>`
       ).join('');
 
-    const gridEl = document.getElementById('sectores-grid');
-    gridEl.innerHTML = tecnicos.map(t => `
+    document.getElementById('sectores-grid').innerHTML = tecnicos.map(t => `
       <div class="sector-card">
         <div class="sector-card-header">
           <span class="tec-name">${t.nombre}</span>
@@ -537,7 +490,7 @@
     document.getElementById('sectores-content').style.display = 'block';
   }
 
-  // ── INIT ──────────────────────────────────────────────────────────────────
+  // ── INIT ───────────────────────────────────────────────────────────────────
   async function initApp() {
     try {
       const [configJson, riesgoJson, sectoresJson] = await Promise.all([
@@ -553,8 +506,7 @@
       render('');
       updateInfo.textContent = `Última actualización: ${new Date().toLocaleString('es-PY')}`;
 
-      const tecnicos = parseSectores(sectoresJson);
-      renderSectores(tecnicos);
+      renderSectores(parseSectores(sectoresJson));
 
     } catch(e) {
       loadingMsg.style.display = 'none';
