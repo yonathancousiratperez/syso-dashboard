@@ -290,7 +290,13 @@
   }
 
   // ── PERMISO DE TRABAJO ─────────────────────────────────────────────────────
-  // Regla: apertura + 15 días; si cae en día 30 y el mes tiene 31 días → extender al 31
+  // Vencimientos fijos: día 15 o último día del mes.
+  // Excepción: si abre el mismo día del cierre (día 15 o último día), corre la quincena siguiente.
+  //
+  // Día 1-14   → vence día 15 mismo mes
+  // Día 15     → abre en cierre 1ª quincena → vence último día del mes
+  // Día 16-pen → vence último día del mes
+  // Último día → abre en cierre 2ª quincena → vence día 15 del mes siguiente
   function calcExpiry(fechaStr) {
     const str = (fechaStr || '').trim();
     let d;
@@ -303,15 +309,22 @@
     } else return null;
     if (isNaN(d)) return null;
 
-    const expiry = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 15);
+    const day     = d.getDate();
+    const lastDay = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
 
-    // Si cayó en día 30 pero el mes tiene 31 días → extender al 31
-    const lastDay = new Date(expiry.getFullYear(), expiry.getMonth() + 1, 0).getDate();
-    if (expiry.getDate() === 30 && lastDay === 31) {
-      expiry.setDate(31);
+    if (day < 15) {
+      // Primera quincena normal → vence día 15
+      return new Date(d.getFullYear(), d.getMonth(), 15);
+    } else if (day === 15) {
+      // Abre en cierre de 1ª quincena → excepción: corre la 2ª quincena completa
+      return new Date(d.getFullYear(), d.getMonth() + 1, 0);
+    } else if (day < lastDay) {
+      // Segunda quincena normal → vence último día del mes
+      return new Date(d.getFullYear(), d.getMonth() + 1, 0);
+    } else {
+      // Abre en último día del mes (cierre de 2ª quincena) → excepción: corre 1ª quincena siguiente
+      return new Date(d.getFullYear(), d.getMonth() + 1, 15);
     }
-
-    return expiry;
   }
 
   function permitStatus(fechaStr) {
