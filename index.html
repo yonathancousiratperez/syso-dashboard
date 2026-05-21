@@ -141,7 +141,6 @@
     .sector-card-header .tec-name { font-weight: 700; font-size: 0.9rem; }
     .badge-count { background: rgba(249,168,37,0.25); color: #f9a825; font-weight: 700; font-size: 0.8rem; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
 
-    /* Tabla sectores: 2 columnas (Sector + Apertura), badge embebido en celda sector */
     .sector-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
     .sector-table thead th {
       background: #fafafa; padding: 8px 14px; text-align: left;
@@ -156,7 +155,6 @@
 
     .sector-nombre { font-size: 0.85rem; font-weight: 500; margin-bottom: 5px; }
 
-    /* Badge embebido bajo el nombre */
     .permiso-badge {
       display: inline-block;
       font-size: 0.7rem; font-weight: 700;
@@ -215,9 +213,7 @@
         <div class="table-wrap">
           <table id="data-table" style="display:none;">
             <thead>
-              <tr>
-                <th>ID Registro</th><th>Tipo / Concepto</th><th>Área</th><th>Anomalía</th>
-              </tr>
+              <tr><th>ID Registro</th><th>Tipo / Concepto</th><th>Área</th><th>Anomalía</th></tr>
             </thead>
             <tbody id="table-body"></tbody>
           </table>
@@ -293,7 +289,8 @@
     return String(c.v);
   }
 
-  // Vencimiento = apertura + 15 días exactos
+  // ── PERMISO DE TRABAJO ─────────────────────────────────────────────────────
+  // Regla: apertura + 15 días; si cae en día 30 y el mes tiene 31 días → extender al 31
   function calcExpiry(fechaStr) {
     const str = (fechaStr || '').trim();
     let d;
@@ -305,7 +302,16 @@
       d = new Date(+yyyy, +mm - 1, +dd);
     } else return null;
     if (isNaN(d)) return null;
-    return new Date(d.getFullYear(), d.getMonth(), d.getDate() + 15);
+
+    const expiry = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 15);
+
+    // Si cayó en día 30 pero el mes tiene 31 días → extender al 31
+    const lastDay = new Date(expiry.getFullYear(), expiry.getMonth() + 1, 0).getDate();
+    if (expiry.getDate() === 30 && lastDay === 31) {
+      expiry.setDate(31);
+    }
+
+    return expiry;
   }
 
   function permitStatus(fechaStr) {
@@ -314,7 +320,7 @@
     const today = new Date(); today.setHours(0,0,0,0);
     const daysLeft = Math.ceil((expiry - today) / 86400000);
     const label = expiry.toLocaleDateString('es-PY', { day:'2-digit', month:'short', year:'numeric' });
-    if (daysLeft < 0)  return { cls:'permiso-vencido', text:`Vencido el ${label}` };
+    if (daysLeft < 0)   return { cls:'permiso-vencido', text:`Vencido el ${label}` };
     if (daysLeft === 0) return { cls:'permiso-vencido', text:'Vence hoy' };
     if (daysLeft <= 3)  return { cls:'permiso-warn',    text:`Vence en ${daysLeft}d (${label})` };
     return { cls:'permiso-ok', text:`Vence ${label}` };
@@ -352,18 +358,20 @@
     return { days, time:`${h}:${m}:${s}` };
   }
   function tickCounters() {
-    startTimes.forEach((start,i)=>{
-      const {days,time}=elapsed(start);
-      const de=document.getElementById(`cd-${i}`); const te=document.getElementById(`ct-${i}`);
-      if(de) de.textContent=days; if(te) te.textContent=time;
+    startTimes.forEach((start,i) => {
+      const {days,time} = elapsed(start);
+      const de = document.getElementById(`cd-${i}`);
+      const te = document.getElementById(`ct-${i}`);
+      if (de) de.textContent = days;
+      if (te) te.textContent = time;
     });
   }
   function renderCounters(json) {
-    const data=(json.table.rows||[]).map(r=>r.c.map(cellStr)).filter(r=>r[0]&&r[1]&&r[0].toLowerCase()!=='nombre');
-    if(!data.length){countersEl.innerHTML='';return;}
-    startTimes=data.map(r=>parseDate(r[1]));
-    countersEl.innerHTML=data.map((r,i)=>{
-      const {days,time}=elapsed(startTimes[i]);
+    const data = (json.table.rows||[]).map(r=>r.c.map(cellStr)).filter(r=>r[0]&&r[1]&&r[0].toLowerCase()!=='nombre');
+    if (!data.length) { countersEl.innerHTML=''; return; }
+    startTimes = data.map(r=>parseDate(r[1]));
+    countersEl.innerHTML = data.map((r,i) => {
+      const {days,time} = elapsed(startTimes[i]);
       return `<div class="counter-card">
         <div class="counter-name">${r[0]}</div>
         <div class="days-row"><span class="days-num" id="cd-${i}">${days}</span><span class="days-label">días</span></div>
@@ -371,27 +379,27 @@
         <div class="since">desde el ${formatDateLong(startTimes[i])}</div>
       </div>`;
     }).join('');
-    setInterval(tickCounters,1000);
+    setInterval(tickCounters, 1000);
   }
   function populate(json) {
-    const rows=(json.table.rows||[]).map(r=>r.c.map(cellStr));
-    const pending=rows.filter(r=>(r[COL.estado]||'').trim().toLowerCase()==='pendiente');
-    const inspectors=[...new Set(pending.map(r=>(r[COL.inspector]||'').trim()))].filter(Boolean).sort();
-    sel.innerHTML=`<option value="">— Todos los pendientes (${pending.length}) —</option>`;
-    inspectors.forEach(name=>{ const o=document.createElement('option'); o.value=o.textContent=name; sel.appendChild(o); });
+    const rows = (json.table.rows||[]).map(r=>r.c.map(cellStr));
+    const pending = rows.filter(r=>(r[COL.estado]||'').trim().toLowerCase()==='pendiente');
+    const inspectors = [...new Set(pending.map(r=>(r[COL.inspector]||'').trim()))].filter(Boolean).sort();
+    sel.innerHTML = `<option value="">— Todos los pendientes (${pending.length}) —</option>`;
+    inspectors.forEach(name => { const o=document.createElement('option'); o.value=o.textContent=name; sel.appendChild(o); });
     return pending;
   }
   function render(inspector) {
-    const filtered=inspector?allRows.filter(r=>(r[COL.inspector]||'').trim()===inspector):allRows;
-    countEl.textContent=filtered.length;
-    statsDiv.style.display=filtered.length>0||inspector?'flex':'none';
-    tableBody.innerHTML='';
-    if(!filtered.length){ dataTable.style.display='none'; emptyState.style.display='block'; }
+    const filtered = inspector ? allRows.filter(r=>(r[COL.inspector]||'').trim()===inspector) : allRows;
+    countEl.textContent = filtered.length;
+    statsDiv.style.display = filtered.length>0||inspector ? 'flex' : 'none';
+    tableBody.innerHTML = '';
+    if (!filtered.length) { dataTable.style.display='none'; emptyState.style.display='block'; }
     else {
       emptyState.style.display='none'; dataTable.style.display='table';
-      filtered.forEach(r=>{
-        const tr=document.createElement('tr');
-        tr.innerHTML=`<td><span class="badge-id">${r[COL.id_registro]||'—'}</span></td>
+      filtered.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td><span class="badge-id">${r[COL.id_registro]||'—'}</span></td>
           <td><span class="badge-concepto">${r[COL.tipo_concepto]||'—'}</span></td>
           <td><span class="badge-area">${r[COL.area]||'—'}</span></td>
           <td><span class="anomalia-text">${r[COL.anomalia]||'—'}</span></td>`;
@@ -399,35 +407,37 @@
       });
     }
   }
-  sel.addEventListener('change',()=>render(sel.value));
+  sel.addEventListener('change', () => render(sel.value));
 
   // ── SECTORES ───────────────────────────────────────────────────────────────
   function parseSectores(json) {
-    const cols=json.table.cols||[];
-    const rows=(json.table.rows||[]).map(r=>r.c.map(cellStr));
-    const tecnicos=[];
-    for(let col=1;col<cols.length;col+=2){
-      const nombre=(cols[col].label||'').trim();
-      if(!nombre) continue;
-      const sectores=[];
-      for(let r=0;r<rows.length;r++){
-        const sector=(rows[r][col]||'').trim();
-        const fecha=(rows[r][col-1]||'').trim();
-        if(sector) sectores.push({sector,fecha});
+    const cols = json.table.cols || [];
+    const rows = (json.table.rows||[]).map(r=>r.c.map(cellStr));
+    const tecnicos = [];
+    for (let col=1; col<cols.length; col+=2) {
+      const nombre = (cols[col].label||'').trim();
+      if (!nombre) continue;
+      const sectores = [];
+      for (let r=0; r<rows.length; r++) {
+        const sector = (rows[r][col]||'').trim();
+        const fecha  = (rows[r][col-1]||'').trim();
+        if (sector) sectores.push({sector, fecha});
       }
-      tecnicos.push({nombre,sectores});
+      tecnicos.push({nombre, sectores});
     }
     return tecnicos;
   }
 
   function renderSectores(tecnicos) {
-    const total=tecnicos.reduce((s,t)=>s+t.sectores.length,0);
+    const total = tecnicos.reduce((s,t)=>s+t.sectores.length, 0);
 
-    document.getElementById('sectores-stats').innerHTML=
-      `<div class="stat-box"><div class="num">${total}</div><div class="lbl">Total sectores</div></div>`+
-      tecnicos.map(t=>`<div class="stat-box"><div class="num">${t.sectores.length}</div><div class="lbl">${t.nombre.replace(/^Téc\.\s*/i,'')}</div></div>`).join('');
+    document.getElementById('sectores-stats').innerHTML =
+      `<div class="stat-box"><div class="num">${total}</div><div class="lbl">Total sectores</div></div>` +
+      tecnicos.map(t =>
+        `<div class="stat-box"><div class="num">${t.sectores.length}</div><div class="lbl">${t.nombre.replace(/^Téc\.\s*/i,'')}</div></div>`
+      ).join('');
 
-    document.getElementById('sectores-grid').innerHTML=tecnicos.map(t=>`
+    document.getElementById('sectores-grid').innerHTML = tecnicos.map(t => `
       <div class="sector-card">
         <div class="sector-card-header">
           <span class="tec-name">${t.nombre}</span>
@@ -436,9 +446,9 @@
         <table class="sector-table">
           <thead><tr><th>Sector / Permiso de trabajo</th><th>Apertura</th></tr></thead>
           <tbody>
-            ${t.sectores.map(s=>{
-              const st=permitStatus(s.fecha);
-              const badge=st?`<br><span class="permiso-badge ${st.cls}">${st.text}</span>`:'';
+            ${t.sectores.map(s => {
+              const st = permitStatus(s.fecha);
+              const badge = st ? `<br><span class="permiso-badge ${st.cls}">${st.text}</span>` : '';
               return `<tr>
                 <td><span class="sector-nombre">${s.sector}</span>${badge}</td>
                 <td class="fecha-col">${s.fecha}</td>
@@ -448,36 +458,36 @@
         </table>
       </div>`).join('');
 
-    document.getElementById('sectores-update').textContent=`Última actualización: ${new Date().toLocaleString('es-PY')}`;
-    document.getElementById('sectores-loading').style.display='none';
-    document.getElementById('sectores-content').style.display='block';
+    document.getElementById('sectores-update').textContent = `Última actualización: ${new Date().toLocaleString('es-PY')}`;
+    document.getElementById('sectores-loading').style.display = 'none';
+    document.getElementById('sectores-content').style.display = 'block';
   }
 
   async function initApp() {
     try {
-      const [configJson,riesgoJson,sectoresJson]=await Promise.all([
+      const [configJson, riesgoJson, sectoresJson] = await Promise.all([
         fetchSheetRaw('Configuracion'),
         fetchSheetRaw('Riesgo'),
         fetchSheetRaw('S. Operativos')
       ]);
       renderCounters(configJson);
-      loadingMsg.style.display='none';
-      allRows=populate(riesgoJson);
+      loadingMsg.style.display = 'none';
+      allRows = populate(riesgoJson);
       render('');
-      updateInfo.textContent=`Última actualización: ${new Date().toLocaleString('es-PY')}`;
+      updateInfo.textContent = `Última actualización: ${new Date().toLocaleString('es-PY')}`;
       renderSectores(parseSectores(sectoresJson));
     } catch(e) {
-      loadingMsg.style.display='none';
-      errorMsg.style.display='block';
-      errorMsg.textContent=`Error al cargar datos: ${e.message}`;
-      document.getElementById('sectores-loading').style.display='none';
-      const se=document.getElementById('sectores-error');
-      se.style.display='block';
-      se.textContent=`Error al cargar sectores: ${e.message}`;
+      loadingMsg.style.display = 'none';
+      errorMsg.style.display = 'block';
+      errorMsg.textContent = `Error al cargar datos: ${e.message}`;
+      document.getElementById('sectores-loading').style.display = 'none';
+      const se = document.getElementById('sectores-error');
+      se.style.display = 'block';
+      se.textContent = `Error al cargar sectores: ${e.message}`;
     }
   }
 
-  if(sessionStorage.getItem('ssma_auth')==='1') initApp();
+  if (sessionStorage.getItem('ssma_auth') === '1') initApp();
 </script>
 </body>
 </html>
